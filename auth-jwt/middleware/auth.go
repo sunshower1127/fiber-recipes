@@ -3,7 +3,7 @@ package middleware
 import (
 	"api-fiber-gorm/config"
 
-	jwtware "github.com/gofiber/contrib/jwt"
+	jwtware "github.com/gofiber/contrib/jwt" // fiber에서 jwt 헤더 검증을 지원해줌
 	"github.com/gofiber/fiber/v2"
 )
 

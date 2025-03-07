@@ -138,3 +138,11 @@ func DeleteUser(c *fiber.Ctx) error {
 	db.Delete(&user)
 	return c.JSON(fiber.Map{"status": "success", "message": "User successfully deleted", "data": nil})
 }
+
+func WhoAmI(c *fiber.Ctx) error {
+
+	userToken := c.Locals("user").(*jwt.Token)
+	claims := userToken.Claims.(jwt.MapClaims)
+
+	return c.JSON(claims)
+}

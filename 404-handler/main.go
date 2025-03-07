@@ -17,7 +17,7 @@ func main() {
 	// Routes
 	app.Get("/hello", hello)
 
-	// 404 Handler
+	// 404 Handler -> 맨 뒤에다가 해주면 되겠죠
 	app.Use(func(c *fiber.Ctx) error {
 		return c.SendStatus(404) // => 404 "Not Found"
 	})

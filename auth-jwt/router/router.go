@@ -9,7 +9,7 @@ import (
 )
 
 // SetupRoutes setup router api
-func SetupRoutes(app *fiber.App) {
+func SetupRoutes(app *fiber.App) { // 라우팅은 app을 의존성으로 받음.
 	// Middleware
 	api := app.Group("/api", logger.New())
 	api.Get("/", handler.Hello)
@@ -20,7 +20,8 @@ func SetupRoutes(app *fiber.App) {
 
 	// User
 	user := api.Group("/user")
-	user.Get("/:id", handler.GetUser)
+	user.Get("/", middleware.Protected(), handler.WhoAmI)
+	user.Get("/:id", middleware.Protected(), handler.GetUser)
 	user.Post("/", handler.CreateUser)
 	user.Patch("/:id", middleware.Protected(), handler.UpdateUser)
 	user.Delete("/:id", middleware.Protected(), handler.DeleteUser)

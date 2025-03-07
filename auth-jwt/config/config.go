@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
+	"github.com/joho/godotenv" // dot.env
 )
 
 // Config func to get env value

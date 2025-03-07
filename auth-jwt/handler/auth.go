@@ -18,7 +18,7 @@ import (
 
 // CheckPasswordHash compare password with hash
 func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) // 타입변환은 파이썬과 비슷한가
 	return err == nil
 }
 
@@ -26,7 +26,7 @@ func getUserByEmail(e string) (*model.User, error) {
 	db := database.DB
 	var user model.User
 	if err := db.Where(&model.User{Email: e}).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		if errors.Is(err, gorm.ErrRecordNotFound) { // 특정 에러 처리 로직
 			return nil, nil
 		}
 		return nil, err
@@ -66,13 +66,13 @@ func Login(c *fiber.Ctx) error {
 	input := new(LoginInput)
 	var userData UserData
 
-	if err := c.BodyParser(&input); err != nil {
+	if err := c.BodyParser(&input); err != nil { // 빈 struct 포인터로 데이터를 받고, 에러는 따로 처리함 이렇게
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "error", "message": "Error on login request", "data": err})
 	}
 
 	identity := input.Identity
 	pass := input.Password
-	userModel, err := new(model.User), *new(error)
+	userModel, err := new(model.User), *new(error) // *new(어떤타입)은 타입을 명시한 default값이라고 볼 수 있음.
 
 	if isEmail(identity) {
 		userModel, err = getUserByEmail(identity)
@@ -103,7 +103,7 @@ func Login(c *fiber.Ctx) error {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["username"] = userData.Username
 	claims["user_id"] = userData.ID
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix() // expired는 Unix 시간으로 표현하나봄 보통
 
 	t, err := token.SignedString([]byte(config.Config("SECRET")))
 	if err != nil {

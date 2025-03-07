@@ -10,3 +10,5 @@ type User struct {
 	Password string `gorm:"not null" json:"password"`
 	Names    string `json:"names"`
 }
+
+// struct에 메타데이터를 이렇게 추가함.
